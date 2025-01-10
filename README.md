@@ -14,7 +14,7 @@ A secure command-line tool for managing Ethereum wallets with encryption support
 ## 🚀 Installation
 
 ```bash
-go install github.com/yourusername/goevmwallet@latest
+go install github.com/nikola43/goevmwallet@latest
 ```
 
 ## 🔧 Usage
