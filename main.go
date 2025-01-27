@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/user"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -34,7 +35,15 @@ func main() {
 	}
 
 	c := cypher.NewCypher(password)
-	walletFile := "wallets.dat"
+
+	homeDir, err := getHomeDirectory()
+    if err != nil {
+        fmt.Println("Error getting home directory:", err)
+		return
+    }
+    fmt.Printf("Home directory: %s\n", homeDir)
+
+	walletFile := homeDir + "/wallets.dat"
 
 	switch command {
 	case "create":
@@ -132,6 +141,7 @@ func handleCreate(walletFile string, c *cypher.Cypher, name string) {
 	}
 
 	fmt.Println("\nWallet created successfully:")
+	fmt.Printf("Path: %s\n", walletFile)
 	printWallet(wallet)
 }
 
@@ -329,4 +339,14 @@ func generateWallet() (*Wallet, error) {
 	}
 
 	return wallet, nil
+}
+
+func getHomeDirectory() (string, error) {
+	// Get the current user information
+	currentUser, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+	// Return the home directory of the current user
+	return currentUser.HomeDir, nil
 }
